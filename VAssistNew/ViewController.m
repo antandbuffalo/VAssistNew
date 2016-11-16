@@ -44,7 +44,7 @@
 -(void)presentObjectDetectedVC:(NSMutableDictionary *)objectDetails {
     objectVC.objectDetails = objectDetails;
     isModalPresented = YES;
-    [self.navigationController presentViewController:objectVC animated:YES completion:nil];
+    [self presentViewController:objectVC animated:YES completion:nil];
 }
 
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(CLBeaconRegion *)region {
@@ -92,9 +92,13 @@
             else {
                 if(objectVC != nil && isModalPresented) {
                     [objectVC dismissViewControllerAnimated:YES completion:nil];
+                    isModalPresented = NO;
                 }
             }
             [beaconStatus setText: [NSString stringWithFormat:@"%d - %@", counter++, beaconPlace]];
+            objectDetails[@"beaconStatus"] = [NSString stringWithFormat:@"%d - %@", counter++, beaconPlace];
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"beaconStatus" object:nil userInfo:objectDetails];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"beaconStatus" object:objectDetails];
         }
     }
     else if([region.identifier isEqualToString:VA_MUSIC_ROOM]) {

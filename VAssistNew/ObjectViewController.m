@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *navTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblMessage;
+@property (weak, nonatomic) IBOutlet UILabel *beaconStatus;
 
 @end
 
@@ -74,6 +75,12 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(void)beaconStatus:(NSNotification *)notification {
+    NSLog(@"notif - %@", notification);
+    NSDictionary *details = (NSDictionary *)notification.object;
+    self.beaconStatus.text = details[@"beaconStatus"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -82,6 +89,8 @@
     self.lblMessage.text = self.objectDetails[@"message"];
     
     //display voice message here
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beaconStatus:) name:@"beaconStatus" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
