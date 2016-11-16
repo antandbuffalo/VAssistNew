@@ -20,7 +20,7 @@
 
 +(void)initDatabase {
     NSLog(@"doc - %@", [Utility applicationDocumentsDirectory]);
-    NSMutableArray *records = [Utility recordsForThePredicate: [NSPredicate predicateWithFormat:@"TRUEPREDICATE"] forTable:@"Device"];
+    NSMutableArray *records = [Utility recordsForThePredicate:nil forTable:@"Device"];
     NSLog(@"records -- %@", records);
     
     if(records.count == 0) {

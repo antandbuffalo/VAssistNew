@@ -33,7 +33,7 @@
     //check current door status from local db and return the value
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"p_id == %@", deviceName];
-    NSMutableArray *records = [Utility recordsForThePredicate:predicate forTable:@"Devices"];
+    NSMutableArray *records = [Utility recordsForThePredicate:predicate forTable:@"Device"];
     if(records.count > 0) {
         Device *device = [records objectAtIndex:0];
         NSLog(@"sta - %@", device.p_status);
@@ -136,7 +136,7 @@
 }
 
 -(void)initDefaults {
-    isModalPresented = NO;
+    isModalPresented = NO; 
     counter = 0;
     
     self.locationManager = [[CLLocationManager alloc] init];

@@ -24,7 +24,7 @@
     //send service call to RP to open or close
     if(self.objectDetails[@"type"] == VA_DOOR) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"p_id == %@", VA_DOOR];
-        NSArray *records = [Utility recordsForThePredicate:predicate forTable:@"Devices"];
+        NSArray *records = [Utility recordsForThePredicate:predicate forTable:@"Device"];
         NSString *newStatus = @"";
 
         if(self.objectDetails[@"status"] == VA_DOOR_OPENED) {
@@ -43,7 +43,7 @@
     }
     else if(self.objectDetails[@"type"] == VA_MUSIC_ROOM) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"p_id == %@", VA_MUSIC_ROOM];
-        NSArray *records = [Utility recordsForThePredicate:predicate forTable:@"Devices"];
+        NSArray *records = [Utility recordsForThePredicate:predicate forTable:@"Device"];
         NSString *newStatus = @"";
         
         if(self.objectDetails[@"status"] == VA_MUSIC_ON) {
