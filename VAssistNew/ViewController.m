@@ -11,6 +11,7 @@
 #import "Utility.h"
 #import "Constants.h"
 #import "Device+CoreDataProperties.h"
+#import <AFNetworking/AFHTTPSessionManager.h>
 
 @interface ViewController () {
     CLBeaconRegion *beaconRegion;
@@ -19,6 +20,7 @@
     NSMutableArray *devices;
     BOOL isModalPresented;
     ObjectViewController *objectVC;
+    __weak IBOutlet UIActivityIndicatorView *spinner;
 }
 
 @end
@@ -45,6 +47,7 @@
     objectVC.objectDetails = objectDetails;
     isModalPresented = YES;
     [self presentViewController:objectVC animated:YES completion:nil];
+    [spinner stopAnimating];
 }
 
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(CLBeaconRegion *)region {
@@ -93,6 +96,7 @@
                 if(objectVC != nil && isModalPresented) {
                     [objectVC dismissViewControllerAnimated:YES completion:nil];
                     isModalPresented = NO;
+                    [spinner startAnimating];
                 }
             }
             [beaconStatus setText: [NSString stringWithFormat:@"%d - %@", counter++, beaconPlace]];
@@ -153,7 +157,9 @@
         // this method gets called in MainVC when your SecondVC is dismissed
         NSLog(@"Dismissed SecondViewController");
         isModalPresented = NO;
+        [spinner startAnimating];
     };
+    [spinner startAnimating];
 }
 
 - (void)viewDidLoad {
@@ -166,6 +172,14 @@
     
     [self initBeacon];
     [self checkStatus:VA_DOOR];
+    
+    NSURL *URL = [NSURL URLWithString:@"http://httpbin.org/ip"];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -21,6 +21,7 @@
 		339B5E5C1DDC874A005A3783 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E561DDC874A005A3783 /* Message.m */; };
 		339B5E5D1DDC874A005A3783 /* Device+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E581DDC874A005A3783 /* Device+CoreDataProperties.m */; };
 		339B5E5E1DDC874A005A3783 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E5A1DDC874A005A3783 /* Device.m */; };
+		432E5FFA5374AB6E1773FCC4 /* libPods-VAssistNew.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA46530D98C6C64C0C490048 /* libPods-VAssistNew.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,9 @@
 		339B5E581DDC874A005A3783 /* Device+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Device+CoreDataProperties.m"; sourceTree = "<group>"; };
 		339B5E591DDC874A005A3783 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
 		339B5E5A1DDC874A005A3783 /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
+		84BF66B721FFB1CE023EF40B /* Pods-VAssistNew.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VAssistNew.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VAssistNew/Pods-VAssistNew.debug.xcconfig"; sourceTree = "<group>"; };
+		EA46530D98C6C64C0C490048 /* libPods-VAssistNew.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VAssistNew.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA5C9D701FCDE4A7DA6C8001 /* Pods-VAssistNew.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VAssistNew.release.xcconfig"; path = "Pods/Target Support Files/Pods-VAssistNew/Pods-VAssistNew.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				432E5FFA5374AB6E1773FCC4 /* libPods-VAssistNew.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +72,8 @@
 			children = (
 				339B5E181DDC746E005A3783 /* VAssistNew */,
 				339B5E171DDC746E005A3783 /* Products */,
+				38F11F1F3E73E2B7D3932380 /* Pods */,
+				8A8DD2909BC4EB89C5B2E7A4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -117,6 +124,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		38F11F1F3E73E2B7D3932380 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				84BF66B721FFB1CE023EF40B /* Pods-VAssistNew.debug.xcconfig */,
+				FA5C9D701FCDE4A7DA6C8001 /* Pods-VAssistNew.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8A8DD2909BC4EB89C5B2E7A4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EA46530D98C6C64C0C490048 /* libPods-VAssistNew.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -124,9 +148,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 339B5E301DDC746E005A3783 /* Build configuration list for PBXNativeTarget "VAssistNew" */;
 			buildPhases = (
+				0E2DB712C6C86BF79F784C5B /* [CP] Check Pods Manifest.lock */,
 				339B5E121DDC746E005A3783 /* Sources */,
 				339B5E131DDC746E005A3783 /* Frameworks */,
 				339B5E141DDC746E005A3783 /* Resources */,
+				B1B6A146CDE1BB5444D86AF5 /* [CP] Embed Pods Frameworks */,
+				42182C3231BB5CBF0B224D36 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -182,6 +209,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0E2DB712C6C86BF79F784C5B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		42182C3231BB5CBF0B224D36 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VAssistNew/Pods-VAssistNew-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B1B6A146CDE1BB5444D86AF5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VAssistNew/Pods-VAssistNew-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		339B5E121DDC746E005A3783 /* Sources */ = {
@@ -308,6 +383,7 @@
 		};
 		339B5E311DDC746E005A3783 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 84BF66B721FFB1CE023EF40B /* Pods-VAssistNew.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -322,6 +398,7 @@
 		};
 		339B5E321DDC746E005A3783 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA5C9D701FCDE4A7DA6C8001 /* Pods-VAssistNew.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

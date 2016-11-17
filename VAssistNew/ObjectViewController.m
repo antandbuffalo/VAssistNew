@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import "Utility.h"
 #import "Device+CoreDataProperties.h"
+#import <AFNetworking/AFHTTPSessionManager.h>
 
 @interface ObjectViewController ()
 
@@ -23,6 +24,7 @@
 
 - (IBAction)btnYesAction:(UIButton *)sender {
     //send service call to RP to open or close
+    
     if(self.objectDetails[@"type"] == VA_DOOR) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"p_id == %@", VA_DOOR];
         NSArray *records = [Utility recordsForThePredicate:predicate forTable:@"Device"];
@@ -73,6 +75,10 @@
 
 - (IBAction)closeModal:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
+    if(self.didDismiss) {
+        self.didDismiss(@"complete");
+    }
+
 }
 
 -(void)beaconStatus:(NSNotification *)notification {
