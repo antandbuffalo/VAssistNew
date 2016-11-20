@@ -18,6 +18,9 @@ extern NSString *const VA_MUSIC_OFF;
 
 extern NSString *const VA_UUID;
 
+extern NSString *const VA_RP_SERVER_ADDRESS;
+extern NSString *const VA_RP_SERVER_CONTEXT;
+
 #ifndef Constants_h
 #define Constants_h
 

@@ -27,6 +27,20 @@
 
 @implementation ViewController
 
+- (IBAction)glowLED:(UIButton *)sender {
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%d", VA_RP_SERVER_ADDRESS, VA_RP_SERVER_CONTEXT, 24];
+    NSLog(@"server address - %@", urlString);
+    
+    NSURL *URL = [NSURL URLWithString:urlString];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //NSDictionary *dic = [NSDictionary dictionaryWithObject:@"0" forKey:@"id"];
+    [manager POST:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
 - (IBAction)testButtonAction:(UIButton *)sender {
     [self presentObjectDetectedVC: nil];
 }
