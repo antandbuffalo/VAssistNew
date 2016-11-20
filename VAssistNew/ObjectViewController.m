@@ -22,21 +22,55 @@
 
 @implementation ObjectViewController
 
+-(void)doorActions:(NSString *)action {
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@", VA_RP_SERVER_ADDRESS, VA_RP_SERVER_CONTEXT, action];
+    NSLog(@"server address - %@", urlString);
+    
+    NSURL *URL = [NSURL URLWithString:urlString];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //NSDictionary *dic = [NSDictionary dictionaryWithObject:@"0" forKey:@"id"];
+    [manager POST:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
 - (IBAction)btnYesAction:(UIButton *)sender {
     //send service call to RP to open or close
     
     if(self.objectDetails[@"type"] == VA_DOOR) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"p_id == %@", VA_DOOR];
         NSArray *records = [Utility recordsForThePredicate:predicate forTable:@"Device"];
-        NSString *newStatus = @"";
+        NSString __block *newStatus = @"";
 
         if(self.objectDetails[@"status"] == VA_DOOR_OPENED) {
             //close the door - send service to RP
-            newStatus = VA_DOOR_CLOSED;
+            NSString *action = @"close";
+            NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@", VA_RP_SERVER_ADDRESS, VA_RP_SERVER_CONTEXT, action];
+            NSLog(@"server address - %@", urlString);
+            NSURL *URL = [NSURL URLWithString:urlString];
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            [manager POST:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+                NSLog(@"JSON: %@", responseObject);
+                newStatus = VA_DOOR_CLOSED;
+            } failure:^(NSURLSessionTask *operation, NSError *error) {
+                NSLog(@"Error: %@", error);
+            }];
         }
         else {
             //open the door - send service to RP
-            newStatus = VA_DOOR_OPENED;
+            NSString *action = @"open";
+            NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@", VA_RP_SERVER_ADDRESS, VA_RP_SERVER_CONTEXT, action];
+            NSLog(@"server address - %@", urlString);
+            NSURL *URL = [NSURL URLWithString:urlString];
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            [manager POST:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+                NSLog(@"JSON: %@", responseObject);
+                newStatus = VA_DOOR_OPENED;
+            } failure:^(NSURLSessionTask *operation, NSError *error) {
+                NSLog(@"Error: %@", error);
+            }];
         }
         if(records.count > 0) {
             Device *device = [records objectAtIndex:0];
