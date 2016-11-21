@@ -15,9 +15,9 @@
 
 @interface ObjectViewController ()
 
-@property (weak, nonatomic) IBOutlet UINavigationItem *navTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblMessage;
 @property (weak, nonatomic) IBOutlet UILabel *beaconStatus;
+@property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
 
 @end
 
@@ -130,7 +130,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.navTitle.title = self.objectDetails[@"title"];
+    self.lblNavTitle.text = self.objectDetails[@"title"];
     self.lblMessage.text = self.objectDetails[@"message"];
     
     //display voice message here
@@ -139,7 +139,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    self.navTitle.title = self.objectDetails[@"title"];
+    self.lblNavTitle.text = self.objectDetails[@"title"];
     self.lblMessage.text = self.objectDetails[@"message"];
     
     AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]init];
