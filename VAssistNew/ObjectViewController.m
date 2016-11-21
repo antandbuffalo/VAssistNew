@@ -143,7 +143,7 @@
     self.lblMessage.text = self.objectDetails[@"message"];
     
     AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]init];
-    AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc]initWithString: @"Hi!"];
+    AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc]initWithString: self.objectDetails[@"message"]];
     //AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:@&quot;en-GB&quot;];
     
     [synthesizer speakUtterance:utterance];

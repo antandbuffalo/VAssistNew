@@ -208,12 +208,6 @@
     
     [self initBeacon];
     //[self checkStatus:VA_DOOR];
-    
-    AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]init];
-    AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc]initWithString: @"Hi! how are you?"];
-    //AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:@&quot;en-GB&quot;];
-    
-    [synthesizer speakUtterance:utterance];
 }
 
 - (void)didReceiveMemoryWarning {
