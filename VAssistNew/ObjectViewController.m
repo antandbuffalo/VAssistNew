@@ -11,6 +11,7 @@
 #import "Utility.h"
 #import "Device+CoreDataProperties.h"
 #import <AFNetworking/AFHTTPSessionManager.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface ObjectViewController ()
 
@@ -36,14 +37,25 @@
     }];
 }
 
+-(void)updateDoorStatusLocally:(NSString *)newStatus {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"p_id == %@", VA_DOOR];
+    NSArray *records = [Utility recordsForThePredicate:predicate forTable:@"Device"];
+    if(records.count > 0) {
+        Device *device = [records objectAtIndex:0];
+        device.p_status = newStatus;
+        [Utility saveCurrentContext];
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+    if(self.didDismiss) {
+        self.didDismiss(@"complete");
+    }
+}
+
 - (IBAction)btnYesAction:(UIButton *)sender {
     //send service call to RP to open or close
     
     if(self.objectDetails[@"type"] == VA_DOOR) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"p_id == %@", VA_DOOR];
-        NSArray *records = [Utility recordsForThePredicate:predicate forTable:@"Device"];
         NSString __block *newStatus = @"";
-
         if(self.objectDetails[@"status"] == VA_DOOR_OPENED) {
             //close the door - send service to RP
             NSString *action = @"close";
@@ -54,6 +66,7 @@
             [manager POST:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
                 NSLog(@"JSON: %@", responseObject);
                 newStatus = VA_DOOR_CLOSED;
+                [self updateDoorStatusLocally:newStatus];
             } failure:^(NSURLSessionTask *operation, NSError *error) {
                 NSLog(@"Error: %@", error);
             }];
@@ -68,14 +81,10 @@
             [manager POST:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
                 NSLog(@"JSON: %@", responseObject);
                 newStatus = VA_DOOR_OPENED;
+                [self updateDoorStatusLocally:newStatus];
             } failure:^(NSURLSessionTask *operation, NSError *error) {
                 NSLog(@"Error: %@", error);
             }];
-        }
-        if(records.count > 0) {
-            Device *device = [records objectAtIndex:0];
-            device.p_status = newStatus;
-            [Utility saveCurrentContext];
         }
     }
     else if(self.objectDetails[@"type"] == VA_MUSIC_ROOM) {
@@ -96,10 +105,6 @@
             device.p_status = newStatus;
             [Utility saveCurrentContext];
         }
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
-    if(self.didDismiss) {
-        self.didDismiss(@"complete");
     }
 }
 
@@ -131,6 +136,17 @@
     //display voice message here
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beaconStatus:) name:@"beaconStatus" object:nil];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    self.navTitle.title = self.objectDetails[@"title"];
+    self.lblMessage.text = self.objectDetails[@"message"];
+    
+    AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]init];
+    AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc]initWithString: @"Hi!"];
+    //AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:@&quot;en-GB&quot;];
+    
+    [synthesizer speakUtterance:utterance];
 }
 
 - (void)didReceiveMemoryWarning {

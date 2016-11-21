@@ -12,6 +12,7 @@
 #import "Constants.h"
 #import "Device+CoreDataProperties.h"
 #import <AFNetworking/AFHTTPSessionManager.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface ViewController () {
     CLBeaconRegion *beaconRegion;
@@ -53,6 +54,7 @@
     if(records.count > 0) {
         Device *device = [records objectAtIndex:0];
         NSLog(@"sta - %@", device.p_status);
+        return device.p_status;
     }
     return nil;
 }
@@ -62,6 +64,20 @@
     isModalPresented = YES;
     [self presentViewController:objectVC animated:YES completion:nil];
     [spinner stopAnimating];
+}
+
+-(void)openModal:(NSMutableDictionary *)objectDetails {
+    
+    [self presentObjectDetectedVC: objectDetails];
+    
+}
+
+-(void)closeModal {
+    if(objectVC != nil && isModalPresented) {
+        [objectVC dismissViewControllerAnimated:YES completion:nil];
+        isModalPresented = NO;
+        [spinner startAnimating];
+    }
 }
 
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(CLBeaconRegion *)region {
@@ -78,44 +94,50 @@
             
             BOOL openModal = NO;
             
-            if(beacon.proximity == CLProximityImmediate) {
-                beaconPlace = @"Immediate";
-            }
-            else if(beacon.proximity == CLProximityNear) {
+//            if(beacon.proximity == CLProximityImmediate) {
+//                beaconPlace = @"Immediate";
+//            }
+            if(beacon.proximity == CLProximityNear || beacon.proximity == CLProximityImmediate) {
                 beaconPlace = @"Near";
-                if([[self checkStatus: VA_DOOR] isEqualToString:VA_DOOR_CLOSED]) {
-                    //open the door
-                    objectDetails[@"message"] = @"The door is closed. Do you want to open the door?";
-                    objectDetails[@"status"] = VA_DOOR_CLOSED;
-                }
-                else {
-                    //close the door
-                    objectDetails[@"message"] = @"The door is opened. Do you want to close the door?";
-                    objectDetails[@"status"] = VA_DOOR_OPENED;
+                if(!isModalPresented) {
+                    if([[self checkStatus: VA_DOOR] isEqualToString:VA_DOOR_CLOSED]) {
+                        //open the door
+                        objectDetails[@"message"] = @"The door is closed. Do you want to open the door?";
+                        objectDetails[@"status"] = VA_DOOR_CLOSED;
+                    }
+                    else {
+                        //close the door
+                        objectDetails[@"message"] = @"The door is opened. Do you want to close the door?";
+                        objectDetails[@"status"] = VA_DOOR_OPENED;
+                    }
+                    [self openModal: objectDetails];
                 }
                 openModal = YES;
             }
             else if(beacon.proximity == CLProximityFar) {
                 beaconPlace = @"Far";
+                [self closeModal];
             }
             else {
                 beaconPlace = @"Unknown";
+                [self closeModal];
             }
-            if(openModal) {
-                if(!isModalPresented) {
-                    [self presentObjectDetectedVC: objectDetails];
-                }
-            }
-            else {
-                if(objectVC != nil && isModalPresented) {
-                    [objectVC dismissViewControllerAnimated:YES completion:nil];
-                    isModalPresented = NO;
-                    [spinner startAnimating];
-                }
-            }
+            
+//            if(openModal) {
+//                if(!isModalPresented) {
+//                    [self presentObjectDetectedVC: objectDetails];
+//                }
+//            }
+//            else {
+//                if(objectVC != nil && isModalPresented) {
+//                    [objectVC dismissViewControllerAnimated:YES completion:nil];
+//                    isModalPresented = NO;
+//                    [spinner startAnimating];
+//                }
+//            }
+            
             [beaconStatus setText: [NSString stringWithFormat:@"%d - %@", counter++, beaconPlace]];
             objectDetails[@"beaconStatus"] = [NSString stringWithFormat:@"%d - %@", counter++, beaconPlace];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"beaconStatus" object:nil userInfo:objectDetails];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"beaconStatus" object:objectDetails];
         }
     }
@@ -185,15 +207,13 @@
     [Utility initDatabase];
     
     [self initBeacon];
-    [self checkStatus:VA_DOOR];
+    //[self checkStatus:VA_DOOR];
     
-    NSURL *URL = [NSURL URLWithString:@"http://httpbin.org/ip"];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
+    AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]init];
+    AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc]initWithString: @"Hi! how are you?"];
+    //AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:@&quot;en-GB&quot;];
+    
+    [synthesizer speakUtterance:utterance];
 }
 
 - (void)didReceiveMemoryWarning {
