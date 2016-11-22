@@ -111,6 +111,11 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" id="gk1-0f-WiJ">
+                                <rect key="frame" x="331" y="27" width="25" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.14664128134560561" blue="0.14244479475252714" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -119,6 +124,7 @@
                         <outlet property="beaconStatus" destination="UoB-bM-FtA" id="P4n-28-z0z"/>
                         <outlet property="lblMessage" destination="fDl-Av-BPo" id="YlN-CY-CUW"/>
                         <outlet property="lblNavTitle" destination="VQc-l1-Sig" id="g0p-W2-f01"/>
+                        <outlet property="vwOpenEarsStatus" destination="gk1-0f-WiJ" id="pgC-LA-t6L"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cPG-Gf-1f5" userLabel="First Responder" sceneMemberID="firstResponder"/>

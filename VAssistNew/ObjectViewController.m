@@ -13,11 +13,21 @@
 #import <AFNetworking/AFHTTPSessionManager.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface ObjectViewController ()
+#import <OpenEars/OELanguageModelGenerator.h>
+#import <OpenEars/OEAcousticModel.h>
+#import <OpenEars/OEPocketsphinxController.h>
+
+
+@interface ObjectViewController () <OEEventsObserverDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMessage;
 @property (weak, nonatomic) IBOutlet UILabel *beaconStatus;
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
+@property (weak, nonatomic) IBOutlet UIView *vwOpenEarsStatus;
+@property (strong, nonatomic) OEEventsObserver *openEarsEventsObserver;
+
+@property (strong, nonatomic) NSString *lmPath;
+@property (strong, nonatomic) NSString *dicPath;
 
 @end
 
@@ -126,6 +136,84 @@
     self.beaconStatus.text = details[@"beaconStatus"];
 }
 
+-(void)initOpenEars {
+    self.openEarsEventsObserver = [[OEEventsObserver alloc] init];
+    [self.openEarsEventsObserver setDelegate:self];
+    
+    OELanguageModelGenerator *lmGenerator = [[OELanguageModelGenerator alloc] init];
+    
+    NSArray *words = [NSArray arrayWithObjects:@"YES", @"NO", nil];
+    
+    NSError *err = [lmGenerator generateLanguageModelFromArray:words withFilesNamed:VA_LANGUAGE_FILE forAcousticModelAtPath:[OEAcousticModel pathToModel:@"AcousticModelEnglish"]]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to create a Spanish language model instead of an English one.
+    
+    if(err == nil) {
+        
+        self.lmPath = [lmGenerator pathToSuccessfullyGeneratedLanguageModelWithRequestedName: VA_LANGUAGE_FILE];
+        self.dicPath = [lmGenerator pathToSuccessfullyGeneratedDictionaryWithRequestedName: VA_LANGUAGE_FILE];
+        
+    } else {
+        NSLog(@"Error: %@",[err localizedDescription]);
+    }
+}
+
+- (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
+    NSLog(@"The received hypothesis is %@ with a score of %@ and an ID of %@", hypothesis, recognitionScore, utteranceID);
+    self.vwOpenEarsStatus.backgroundColor = [UIColor yellowColor];
+}
+
+- (void) pocketsphinxDidStartListening {
+    NSLog(@"Pocketsphinx is now listening.");
+    self.vwOpenEarsStatus.backgroundColor = [UIColor greenColor];
+}
+
+- (void) pocketsphinxDidDetectSpeech {
+    NSLog(@"Pocketsphinx has detected speech.");
+    self.vwOpenEarsStatus.backgroundColor = [UIColor greenColor];
+}
+
+- (void) pocketsphinxDidDetectFinishedSpeech {
+    NSLog(@"Pocketsphinx has detected a period of silence, concluding an utterance.");
+    self.vwOpenEarsStatus.backgroundColor = [UIColor greenColor];
+}
+
+- (void) pocketsphinxDidStopListening {
+    NSLog(@"Pocketsphinx has stopped listening.");
+    self.vwOpenEarsStatus.backgroundColor = [UIColor redColor];
+}
+
+- (void) pocketsphinxDidSuspendRecognition {
+    NSLog(@"Pocketsphinx has suspended recognition.");
+    self.vwOpenEarsStatus.backgroundColor = [UIColor redColor];
+}
+
+- (void) pocketsphinxDidResumeRecognition {
+    NSLog(@"Pocketsphinx has resumed recognition.");
+    self.vwOpenEarsStatus.backgroundColor = [UIColor greenColor];
+}
+
+- (void) pocketsphinxDidChangeLanguageModelToFile:(NSString *)newLanguageModelPathAsString andDictionary:(NSString *)newDictionaryPathAsString {
+    NSLog(@"Pocketsphinx is now using the following language model: \n%@ and the following dictionary: %@",newLanguageModelPathAsString,newDictionaryPathAsString);
+}
+
+- (void) pocketSphinxContinuousSetupDidFailWithReason:(NSString *)reasonForFailure {
+    NSLog(@"Listening setup wasn't successful and returned the failure reason: %@", reasonForFailure);
+    self.vwOpenEarsStatus.backgroundColor = [UIColor redColor];
+}
+
+- (void) pocketSphinxContinuousTeardownDidFailWithReason:(NSString *)reasonForFailure {
+    NSLog(@"Listening teardown wasn't successful and returned the failure reason: %@", reasonForFailure);
+    self.vwOpenEarsStatus.backgroundColor = [UIColor redColor];
+}
+
+- (void) testRecognitionCompleted {
+    NSLog(@"A test file that was submitted for recognition is now complete.");
+    
+}
+
+-(void)formatViews {
+    [self.vwOpenEarsStatus.layer setCornerRadius:12.5];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -136,9 +224,14 @@
     //display voice message here
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beaconStatus:) name:@"beaconStatus" object:nil];
+    
+    [self formatViews];
+    [self initOpenEars];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     self.lblNavTitle.text = self.objectDetails[@"title"];
     self.lblMessage.text = self.objectDetails[@"message"];
     
@@ -147,6 +240,14 @@
     //AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:@&quot;en-GB&quot;];
     
     [synthesizer speakUtterance:utterance];
+    
+    [[OEPocketsphinxController sharedInstance] setActive:TRUE error:nil];
+    [[OEPocketsphinxController sharedInstance] startListeningWithLanguageModelAtPath:self.lmPath dictionaryAtPath:self.dicPath acousticModelAtPath:[OEAcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[OEPocketsphinxController sharedInstance] stopListening];
 }
 
 - (void)didReceiveMemoryWarning {

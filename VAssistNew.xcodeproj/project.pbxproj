@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3317F15A1DE496D100FA1E87 /* AcousticModelEnglish.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3317F1571DE496D100FA1E87 /* AcousticModelEnglish.bundle */; };
+		3317F15B1DE496D100FA1E87 /* OpenEars.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3317F1581DE496D100FA1E87 /* OpenEars.framework */; };
+		3317F15C1DE496D100FA1E87 /* Slt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3317F1591DE496D100FA1E87 /* Slt.framework */; };
+		3317F15E1DE4972200FA1E87 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3317F15D1DE4972200FA1E87 /* AudioToolbox.framework */; };
+		3317F1601DE4972B00FA1E87 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3317F15F1DE4972B00FA1E87 /* AVFoundation.framework */; };
 		339B5E1B1DDC746E005A3783 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E1A1DDC746E005A3783 /* main.m */; };
 		339B5E1E1DDC746E005A3783 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E1D1DDC746E005A3783 /* AppDelegate.m */; };
 		339B5E211DDC746E005A3783 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E201DDC746E005A3783 /* ViewController.m */; };
@@ -25,6 +30,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3317F1571DE496D100FA1E87 /* AcousticModelEnglish.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AcousticModelEnglish.bundle; sourceTree = "<group>"; };
+		3317F1581DE496D100FA1E87 /* OpenEars.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEars.framework; sourceTree = "<group>"; };
+		3317F1591DE496D100FA1E87 /* Slt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Slt.framework; sourceTree = "<group>"; };
+		3317F15D1DE4972200FA1E87 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		3317F15F1DE4972B00FA1E87 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		339B5E161DDC746E005A3783 /* VAssistNew.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VAssistNew.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		339B5E1A1DDC746E005A3783 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		339B5E1C1DDC746E005A3783 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -60,16 +70,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3317F1601DE4972B00FA1E87 /* AVFoundation.framework in Frameworks */,
+				3317F15E1DE4972200FA1E87 /* AudioToolbox.framework in Frameworks */,
+				3317F15C1DE496D100FA1E87 /* Slt.framework in Frameworks */,
 				432E5FFA5374AB6E1773FCC4 /* libPods-VAssistNew.a in Frameworks */,
+				3317F15B1DE496D100FA1E87 /* OpenEars.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3317F1561DE496D100FA1E87 /* OpenEars */ = {
+			isa = PBXGroup;
+			children = (
+				3317F1571DE496D100FA1E87 /* AcousticModelEnglish.bundle */,
+				3317F1581DE496D100FA1E87 /* OpenEars.framework */,
+				3317F1591DE496D100FA1E87 /* Slt.framework */,
+			);
+			path = OpenEars;
+			sourceTree = "<group>";
+		};
 		339B5E0D1DDC746E005A3783 = {
 			isa = PBXGroup;
 			children = (
+				3317F1561DE496D100FA1E87 /* OpenEars */,
 				339B5E181DDC746E005A3783 /* VAssistNew */,
 				339B5E171DDC746E005A3783 /* Products */,
 				38F11F1F3E73E2B7D3932380 /* Pods */,
@@ -136,6 +161,8 @@
 		8A8DD2909BC4EB89C5B2E7A4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3317F15F1DE4972B00FA1E87 /* AVFoundation.framework */,
+				3317F15D1DE4972200FA1E87 /* AudioToolbox.framework */,
 				EA46530D98C6C64C0C490048 /* libPods-VAssistNew.a */,
 			);
 			name = Frameworks;
@@ -203,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				339B5E2C1DDC746E005A3783 /* LaunchScreen.storyboard in Resources */,
+				3317F15A1DE496D100FA1E87 /* AcousticModelEnglish.bundle in Resources */,
 				339B5E291DDC746E005A3783 /* Assets.xcassets in Resources */,
 				339B5E241DDC746E005A3783 /* Main.storyboard in Resources */,
 			);
@@ -388,6 +416,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/OpenEars",
+				);
 				INFOPLIST_FILE = VAssistNew/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.antandbuffalo.VAssistNew;
@@ -403,6 +435,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/OpenEars",
+				);
 				INFOPLIST_FILE = VAssistNew/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.antandbuffalo.VAssistNew;

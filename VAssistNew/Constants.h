@@ -21,6 +21,8 @@ extern NSString *const VA_UUID;
 extern NSString *const VA_RP_SERVER_ADDRESS;
 extern NSString *const VA_RP_SERVER_CONTEXT;
 
+extern NSString *const VA_LANGUAGE_FILE;
+
 #ifndef Constants_h
 #define Constants_h
 
