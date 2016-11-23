@@ -11,6 +11,7 @@
 #import "Utility.h"
 #import "Constants.h"
 #import "Device+CoreDataProperties.h"
+#import "Message+CoreDataProperties.h"
 #import <AFNetworking/AFHTTPSessionManager.h>
 #import <AVFoundation/AVFoundation.h>
 
@@ -80,36 +81,61 @@
     }
 }
 
+-(Device *)getObjectDetails:(int)objectId {
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"p_id == %d", objectId];
+    NSMutableArray *records = [Utility recordsForThePredicate:predicate forTable:@"Device"];
+    if(records.count > 0) {
+        Device *device = [records objectAtIndex:0];
+        NSLog(@"sta - %@", device.p_status);
+        return device;
+    }
+    return nil;
+}
+
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(CLBeaconRegion *)region {
     NSLog(@"something - %@", beacons);
     NSLog(@"region - %@", region);
     CLBeacon *beacon;
     NSMutableDictionary *objectDetails = [[NSMutableDictionary alloc] init];
-    if([region.identifier isEqualToString:VA_DOOR]) {
-        objectDetails[@"type"] = VA_DOOR;
-        objectDetails[@"title"] = @"Door";
+    if([region.identifier isEqualToString:VA_REGION_HOME]) {
         if(beacons != nil && beacons.count > 0) {
+            objectDetails[@"type"] = VA_DOOR;
+            
             beacon = beacons[0];
             NSString *beaconPlace = @"";
-            
             BOOL openModal = NO;
             
-//            if(beacon.proximity == CLProximityImmediate) {
-//                beaconPlace = @"Immediate";
-//            }
             if(beacon.proximity == CLProximityNear || beacon.proximity == CLProximityImmediate) {
                 beaconPlace = @"Near";
                 if(!isModalPresented) {
-                    if([[self checkStatus: VA_DOOR] isEqualToString:VA_DOOR_CLOSED]) {
-                        //open the door
-                        objectDetails[@"message"] = @"The door is closed. Do you want to open the door?";
-                        objectDetails[@"status"] = VA_DOOR_CLOSED;
+                    Device *device = [self getObjectDetails:[beacon.major intValue]];
+                    Message *message = nil;
+                    NSArray *messages = [device.message allObjects];
+                    for(int i=0; i < messages.count; i++) {
+                        message = (Message *)messages[i];
+                        if([device.p_status isEqualToString:message.p_status]) {
+                            break;
+                        }
                     }
-                    else {
-                        //close the door
-                        objectDetails[@"message"] = @"The door is opened. Do you want to close the door?";
-                        objectDetails[@"status"] = VA_DOOR_OPENED;
-                    }
+                    
+                    objectDetails[@"title"] = device.p_desc;
+                    objectDetails[@"deviceId"] = device.p_id;
+                    objectDetails[@"message"] = message.desc;
+                    objectDetails[@"status"] = message.p_status;
+                    objectDetails[@"action"] = message.p_action;
+                    objectDetails[@"rpaction"] = message.rp_action;
+
+//                    if([[self checkStatus: VA_DOOR] isEqualToString:VA_DOOR_CLOSED]) {
+//                        //open the door
+//                        objectDetails[@"message"] = @"The door is closed. Do you want to open the door?";
+//                        objectDetails[@"status"] = VA_DOOR_CLOSED;
+//                    }
+//                    else {
+//                        //close the door
+//                        objectDetails[@"message"] = @"The door is opened. Do you want to close the door?";
+//                        objectDetails[@"status"] = VA_DOOR_OPENED;
+//                    }
                     [self openModal: objectDetails];
                 }
                 openModal = YES;
@@ -122,19 +148,6 @@
                 beaconPlace = @"Unknown";
                 [self closeModal];
             }
-            
-//            if(openModal) {
-//                if(!isModalPresented) {
-//                    [self presentObjectDetectedVC: objectDetails];
-//                }
-//            }
-//            else {
-//                if(objectVC != nil && isModalPresented) {
-//                    [objectVC dismissViewControllerAnimated:YES completion:nil];
-//                    isModalPresented = NO;
-//                    [spinner startAnimating];
-//                }
-//            }
             
             [beaconStatus setText: [NSString stringWithFormat:@"%d - %@", counter++, beaconPlace]];
             objectDetails[@"beaconStatus"] = [NSString stringWithFormat:@"%d - %@", counter++, beaconPlace];
@@ -168,7 +181,7 @@
     //same UUID can be used for multiple beacons. The proximity id can be used to identify them uniquely. One location can have one UUID and multiple beacons
     NSUUID * uuid = [[NSUUID alloc] initWithUUIDString: idString];//[UIDevice currentDevice].identifierForVendor;
     
-    beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:uuid identifier: VA_DOOR];
+    beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:uuid identifier: VA_REGION_HOME];
     //[self.locationManager requestAlwaysAuthorization];
     
     if([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {

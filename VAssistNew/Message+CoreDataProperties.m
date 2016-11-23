@@ -2,7 +2,7 @@
 //  Message+CoreDataProperties.m
 //  VAssistNew
 //
-//  Created by Jeyabalaji T M on 16/11/16.
+//  Created by Jeyabalaji T M on 24/11/16.
 //  Copyright © 2016 Ant and Buffalo. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -17,5 +17,7 @@
 @dynamic m_id;
 @dynamic p_id;
 @dynamic p_status;
+@dynamic p_action;
+@dynamic rp_action;
 
 @end

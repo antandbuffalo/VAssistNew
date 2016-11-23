@@ -2,7 +2,7 @@
 //  Device+CoreDataProperties.h
 //  VAssistNew
 //
-//  Created by Jeyabalaji T M on 16/11/16.
+//  Created by Jeyabalaji T M on 24/11/16.
 //  Copyright © 2016 Ant and Buffalo. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -20,7 +20,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *p_desc;
 @property (nullable, nonatomic, retain) NSString *p_id;
 @property (nullable, nonatomic, retain) NSString *p_status;
-@property (nullable, nonatomic, retain) Message *message;
+@property (nullable, nonatomic, retain) NSSet<Message *> *message;
+
+@end
+
+@interface Device (CoreDataGeneratedAccessors)
+
+- (void)addMessageObject:(Message *)value;
+- (void)removeMessageObject:(Message *)value;
+- (void)addMessage:(NSSet<Message *> *)values;
+- (void)removeMessage:(NSSet<Message *> *)values;
 
 @end
 
