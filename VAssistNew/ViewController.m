@@ -23,6 +23,7 @@
     BOOL isModalPresented;
     ObjectViewController *objectVC;
     __weak IBOutlet UIActivityIndicatorView *spinner;
+    __weak IBOutlet UILabel *lblStatus;
 }
 
 @end

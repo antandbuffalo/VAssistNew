@@ -20,6 +20,7 @@
 
 @interface ObjectViewController () <OEEventsObserverDelegate, AVSpeechSynthesizerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIButton *btnYes;
 @property (weak, nonatomic) IBOutlet UILabel *lblMessage;
 @property (weak, nonatomic) IBOutlet UILabel *beaconStatus;
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
@@ -237,7 +238,14 @@
 }
 
 -(void)formatViews {
-    [self.vwOpenEarsStatus.layer setCornerRadius:12.5];
+    [self.vwOpenEarsStatus.layer setCornerRadius:10];
+    [self.btnYes.layer setCornerRadius:80];
+    
+    //[self.lblMessage.layer setCornerRadius:20];
+    [self.lblMessage.layer setShadowColor:[UIColor blackColor].CGColor];
+    [self.lblMessage.layer setShadowOpacity:0.3];
+    [self.lblMessage.layer setShadowRadius:2.0];
+    [self.lblMessage.layer setShadowOffset:CGSizeMake(0.0, 0.0)];
 }
 
 - (void)viewDidLoad {
