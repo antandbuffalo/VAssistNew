@@ -111,32 +111,22 @@
                 beaconPlace = @"Near";
                 if(!isModalPresented) {
                     Device *device = [self getObjectDetails:[beacon.major intValue]];
-                    Message *message = nil;
-                    NSArray *messages = [device.message allObjects];
-                    for(int i=0; i < messages.count; i++) {
-                        message = (Message *)messages[i];
-                        if([device.p_status isEqualToString:message.p_status]) {
-                            break;
-                        }
-                    }
+//                    Message *message = nil;
+//                    NSArray *messages = [device.message allObjects];
+//                    for(int i=0; i < messages.count; i++) {
+//                        message = (Message *)messages[i];
+//                        if([device.p_status isEqualToString:message.p_status]) {
+//                            break;
+//                        }
+//                    }
                     
                     objectDetails[@"title"] = device.p_desc;
                     objectDetails[@"deviceId"] = device.p_id;
-                    objectDetails[@"message"] = message.desc;
-                    objectDetails[@"status"] = message.p_status;
-                    objectDetails[@"action"] = message.p_action;
-                    objectDetails[@"rpaction"] = message.rp_action;
+//                    objectDetails[@"message"] = message.desc;
+//                    objectDetails[@"status"] = message.p_status;
+//                    objectDetails[@"action"] = message.p_action;
+//                    objectDetails[@"rpaction"] = message.rp_action;
 
-//                    if([[self checkStatus: VA_DOOR] isEqualToString:VA_DOOR_CLOSED]) {
-//                        //open the door
-//                        objectDetails[@"message"] = @"The door is closed. Do you want to open the door?";
-//                        objectDetails[@"status"] = VA_DOOR_CLOSED;
-//                    }
-//                    else {
-//                        //close the door
-//                        objectDetails[@"message"] = @"The door is opened. Do you want to close the door?";
-//                        objectDetails[@"status"] = VA_DOOR_OPENED;
-//                    }
                     [self openModal: objectDetails];
                 }
                 openModal = YES;

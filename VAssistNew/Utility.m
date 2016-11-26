@@ -30,7 +30,7 @@
         doorMessage1.p_status = VA_DOOR_CLOSED;
         doorMessage1.p_action = VA_DOOR_OPENED;
         doorMessage1.rp_action = @"open";
-        doorMessage1.desc = @"The door is closed. Do you want to open the door?";
+        doorMessage1.desc = @"You are near bed room door. The door is closed. Do you want to open the door?";
         
         
         Message *doorMessage2 = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:[Utility context]];
@@ -39,7 +39,7 @@
         doorMessage2.p_status = VA_DOOR_OPENED;
         doorMessage2.p_action = VA_DOOR_CLOSED;
         doorMessage2.rp_action = @"close";
-        doorMessage2.desc = @"The door is opened. Do you want to close the door?";
+        doorMessage2.desc = @"You are near bed room door. The door is opened. Do you want to close the door?";
         
         Device *device = [NSEntityDescription insertNewObjectForEntityForName:@"Device" inManagedObjectContext:[Utility context]];
         device.p_id = VA_DOOR;
@@ -54,7 +54,7 @@
         musicMessage1.p_status = VA_MUSIC_OFF;
         musicMessage1.p_action = VA_MUSIC_ON;
         musicMessage1.rp_action = @"on";
-        musicMessage1.desc = @"You are near music room. Do you want to play music?";
+        musicMessage1.desc = @"You are near music room. The music is off. Do you want to play music?";
         
         Message *musicMessage2 = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:[Utility context]];
         musicMessage2.m_id = @"104";

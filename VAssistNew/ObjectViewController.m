@@ -10,6 +10,7 @@
 #import "Constants.h"
 #import "Utility.h"
 #import "Device+CoreDataProperties.h"
+#import "Message+CoreDataProperties.h"
 #import <AFNetworking/AFHTTPSessionManager.h>
 #import <AVFoundation/AVFoundation.h>
 
@@ -65,12 +66,17 @@
 - (IBAction)btnYesAction:(UIButton *)sender {
     //send service call to RP to open or close
     
-    NSString *action = self.objectDetails[@"rpaction"];
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@", VA_RP_SERVER_ADDRESS, VA_RP_SERVER_CONTEXT, action];
+    NSString *action = self.objectDetails[@"action"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/access", VA_RP_SERVER_ADDRESS];
     NSLog(@"server address - %@", urlString);
     NSURL *URL = [NSURL URLWithString:urlString];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager POST:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSDictionary *request = [NSDictionary dictionaryWithObjects: [NSArray arrayWithObjects: self.objectDetails[@"deviceId"], action, nil] forKeys: [NSArray arrayWithObjects: @"deviceId", @"action", nil]];
+    
+    [manager POST:URL.absoluteString parameters:request progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
         if(responseObject[@"error"] == nil) {
             [self updateDoorStatusLocally: self.objectDetails[@"action"] toDevice:self.objectDetails[@"deviceId"]];
@@ -78,59 +84,6 @@
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
-    
-//    if(self.objectDetails[@"type"] == VA_DOOR) {
-//        NSString __block *newStatus = @"";
-//        if(self.objectDetails[@"status"] == VA_DOOR_OPENED) {
-//            //close the door - send service to RP
-//            NSString *action = @"close";
-//            NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@", VA_RP_SERVER_ADDRESS, VA_RP_SERVER_CONTEXT, action];
-//            NSLog(@"server address - %@", urlString);
-//            NSURL *URL = [NSURL URLWithString:urlString];
-//            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//            [manager POST:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-//                NSLog(@"JSON: %@", responseObject);
-//                newStatus = VA_DOOR_CLOSED;
-//                [self updateDoorStatusLocally:newStatus];
-//            } failure:^(NSURLSessionTask *operation, NSError *error) {
-//                NSLog(@"Error: %@", error);
-//            }];
-//        }
-//        else {
-//            //open the door - send service to RP
-//            NSString *action = @"open";
-//            NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@", VA_RP_SERVER_ADDRESS, VA_RP_SERVER_CONTEXT, action];
-//            NSLog(@"server address - %@", urlString);
-//            NSURL *URL = [NSURL URLWithString:urlString];
-//            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//            [manager POST:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-//                NSLog(@"JSON: %@", responseObject);
-//                newStatus = VA_DOOR_OPENED;
-//                [self updateDoorStatusLocally:newStatus];
-//            } failure:^(NSURLSessionTask *operation, NSError *error) {
-//                NSLog(@"Error: %@", error);
-//            }];
-//        }
-//    }
-//    else if(self.objectDetails[@"type"] == VA_MUSIC_ROOM) {
-//        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"p_id == %@", VA_MUSIC_ROOM];
-//        NSArray *records = [Utility recordsForThePredicate:predicate forTable:@"Device"];
-//        NSString *newStatus = @"";
-//        
-//        if(self.objectDetails[@"status"] == VA_MUSIC_ON) {
-//            //close the door - send service to RP
-//            newStatus = VA_MUSIC_OFF;
-//        }
-//        else {
-//            //open the door - send service to RP
-//            newStatus = VA_MUSIC_ON;
-//        }
-//        if(records.count > 0) {
-//            Device *device = [records objectAtIndex:0];
-//            device.p_status = newStatus;
-//            [Utility saveCurrentContext];
-//        }
-//    }
 }
 
 - (IBAction)btnNoAction:(UIButton *)sender {
@@ -248,6 +201,81 @@
     [self.lblMessage.layer setShadowOffset:CGSizeMake(0.0, 0.0)];
 }
 
+-(void)getDeviceDetails {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"p_id == %@", self.objectDetails[@"deviceId"]];
+    NSMutableArray *records = [Utility recordsForThePredicate:predicate forTable:@"Device"];
+    if(records.count > 0) {
+        Device *device = [records objectAtIndex:0];
+        NSLog(@"sta - %@", device.p_status);
+
+        Message *message = nil;
+        NSArray *messages = [device.message allObjects];
+        for(int i=0; i < messages.count; i++) {
+            message = (Message *)messages[i];
+            if([device.p_status isEqualToString:message.p_status]) {
+                break;
+            }
+        }
+        
+        self.objectDetails[@"title"] = device.p_desc;
+        self.objectDetails[@"deviceId"] = device.p_id;
+        self.objectDetails[@"message"] = message.desc;
+        self.objectDetails[@"status"] = message.p_status;
+        self.objectDetails[@"action"] = message.p_action;
+        self.objectDetails[@"rpaction"] = message.rp_action;
+    }
+}
+
+-(void)updateLocalDeviceStatusWithDeviceId:(NSString *)deviceId andStatus:(NSString *)deviceStatus {
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"p_id == %@", deviceId];
+    NSMutableArray *records = [Utility recordsForThePredicate:predicate forTable:@"Device"];
+    if(records.count > 0) {
+        Device *device = [records objectAtIndex:0];
+
+        if(![deviceStatus isEqualToString:device.p_status]) {
+            device.p_status = deviceStatus;
+            [Utility saveCurrentContext];
+        }
+    }
+}
+
+-(void)getDeviceStatusFromRP {
+    NSString *urlString = [NSString stringWithFormat:@"%@/device/%@", VA_RP_SERVER_ADDRESS, self.objectDetails[@"deviceId"]];
+//    NSString *urlString = [NSString stringWithFormat:@"%@/device/11", VA_RP_SERVER_ADDRESS];
+
+    NSLog(@"server address - %@", urlString);
+    
+    NSURL *URL = [NSURL URLWithString:urlString];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:URL.absoluteString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        int status = [responseObject[@"status"] intValue];
+        
+        NSLog(@"JSON: %@", responseObject);
+        NSLog(@"JSON: %@", (NSString *)responseObject[@"status"]);
+        //NSLog(@"type %@", [status class]);
+        if(status == 1) {
+            NSLog(@"good");
+            NSString *deviceId = (NSString *)responseObject[@"device"][@"p_id"];
+            NSString *deviceStatus = (NSString *)responseObject[@"device"][@"d_status"];
+            
+            [self updateLocalDeviceStatusWithDeviceId:deviceId andStatus:deviceStatus];
+            [self getDeviceDetails];
+            
+            self.lblNavTitle.text = self.objectDetails[@"title"];
+            self.lblMessage.text = self.objectDetails[@"message"];
+            
+            AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]init];
+            synthesizer.delegate = self;
+            AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc]initWithString: self.objectDetails[@"message"]];
+            [synthesizer speakUtterance:utterance];
+        }
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -266,13 +294,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.lblNavTitle.text = self.objectDetails[@"title"];
-    self.lblMessage.text = self.objectDetails[@"message"];
-    
-    AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]init];
-    synthesizer.delegate = self;
-    AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc]initWithString: self.objectDetails[@"message"]];
-    [synthesizer speakUtterance:utterance];
+    [self getDeviceStatusFromRP];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
