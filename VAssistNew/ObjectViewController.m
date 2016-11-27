@@ -27,6 +27,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblNavTitle;
 @property (weak, nonatomic) IBOutlet UIView *vwOpenEarsStatus;
 @property (strong, nonatomic) OEEventsObserver *openEarsEventsObserver;
+@property (strong, nonatomic) AVSpeechSynthesizer *synthesizer;
+
 
 @property (strong, nonatomic) NSString *lmPath;
 @property (strong, nonatomic) NSString *dicPath;
@@ -265,10 +267,8 @@
             self.lblNavTitle.text = self.objectDetails[@"title"];
             self.lblMessage.text = self.objectDetails[@"message"];
             
-            AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc]init];
-            synthesizer.delegate = self;
             AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc]initWithString: self.objectDetails[@"message"]];
-            [synthesizer speakUtterance:utterance];
+            [self.synthesizer speakUtterance:utterance];
         }
         
     } failure:^(NSURLSessionTask *operation, NSError *error) {
@@ -279,6 +279,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.synthesizer = [[AVSpeechSynthesizer alloc] init];
+    self.synthesizer.delegate = self;
     
     self.lblNavTitle.text = self.objectDetails[@"title"];
     self.lblMessage.text = self.objectDetails[@"message"];
@@ -300,6 +302,7 @@
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[OEPocketsphinxController sharedInstance] stopListening];
+    [self.synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
 }
 
 - (void)didReceiveMemoryWarning {
