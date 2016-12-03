@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Devices</key>
+	<array>
+		<dict>
+			<key>p_id</key>
+			<string>11</string>
+			<key>p_desc</key>
+			<string>Room Door</string>
+			<key>p_status</key>
+			<string>DOOR_CLOSED</string>
+			<key>message</key>
+			<array>
+				<dict>
+					<key>m_id</key>
+					<string>101</string>
+					<key>p_id</key>
+					<string>11</string>
+					<key>p_status</key>
+					<string>DOOR_CLOSED</string>
+					<key>P_action</key>
+					<string>DOOR_OPENED</string>
+					<key>rp_action</key>
+					<string>open</string>
+					<key>desc</key>
+					<string>You are near bed room door. The door is closed. Do you want to open the door?</string>
+				</dict>
+				<dict>
+					<key>m_id</key>
+					<string>102</string>
+					<key>p_id</key>
+					<string>11</string>
+					<key>p_status</key>
+					<string>DOOR_OPENED</string>
+					<key>P_action</key>
+					<string>DOOR_CLOSED</string>
+					<key>rp_action</key>
+					<string>close</string>
+					<key>desc</key>
+					<string>You are near bed room door. The door is opened. Do you want to close the door?</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>p_id</key>
+			<string>12</string>
+			<key>p_desc</key>
+			<string>Music Room</string>
+			<key>p_status</key>
+			<string>MUSIC_OFF</string>
+			<key>message</key>
+			<array>
+				<dict>
+					<key>m_id</key>
+					<string>103</string>
+					<key>p_id</key>
+					<string>12</string>
+					<key>p_status</key>
+					<string>MUSIC_OFF</string>
+					<key>P_action</key>
+					<string>MUSIC_ON</string>
+					<key>rp_action</key>
+					<string>on</string>
+					<key>desc</key>
+					<string>You are near music room. The music is off. Do you want to play music?</string>
+				</dict>
+				<dict>
+					<key>m_id</key>
+					<string>104</string>
+					<key>p_id</key>
+					<string>12</string>
+					<key>p_status</key>
+					<string>MUSIC_ON</string>
+					<key>P_action</key>
+					<string>MUSIC_OFF</string>
+					<key>rp_action</key>
+					<string>off</string>
+					<key>desc</key>
+					<string>You are near music room. The music is playing. Do you want to stop music?</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

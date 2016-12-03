@@ -26,6 +26,7 @@
 		339B5E4C1DDC8710005A3783 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E4B1DDC8710005A3783 /* Constants.m */; };
 		339B5E511DDC8723005A3783 /* ObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E4E1DDC8723005A3783 /* ObjectViewController.m */; };
 		339B5E521DDC8723005A3783 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E501DDC8723005A3783 /* Utility.m */; };
+		33B573121DF2E2F5007F074F /* Devices.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33B573111DF2E2F5007F074F /* Devices.plist */; };
 		432E5FFA5374AB6E1773FCC4 /* libPods-VAssistNew.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA46530D98C6C64C0C490048 /* libPods-VAssistNew.a */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		339B5E4E1DDC8723005A3783 /* ObjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectViewController.m; sourceTree = "<group>"; };
 		339B5E4F1DDC8723005A3783 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		339B5E501DDC8723005A3783 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
+		33B573111DF2E2F5007F074F /* Devices.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Devices.plist; sourceTree = "<group>"; };
 		84BF66B721FFB1CE023EF40B /* Pods-VAssistNew.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VAssistNew.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VAssistNew/Pods-VAssistNew.debug.xcconfig"; sourceTree = "<group>"; };
 		EA46530D98C6C64C0C490048 /* libPods-VAssistNew.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VAssistNew.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA5C9D701FCDE4A7DA6C8001 /* Pods-VAssistNew.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VAssistNew.release.xcconfig"; path = "Pods/Target Support Files/Pods-VAssistNew/Pods-VAssistNew.release.xcconfig"; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 		339B5E0D1DDC746E005A3783 = {
 			isa = PBXGroup;
 			children = (
+				33B573111DF2E2F5007F074F /* Devices.plist */,
 				3317F1561DE496D100FA1E87 /* OpenEars */,
 				339B5E181DDC746E005A3783 /* VAssistNew */,
 				339B5E171DDC746E005A3783 /* Products */,
@@ -231,6 +234,7 @@
 			files = (
 				339B5E2C1DDC746E005A3783 /* LaunchScreen.storyboard in Resources */,
 				3317F15A1DE496D100FA1E87 /* AcousticModelEnglish.bundle in Resources */,
+				33B573121DF2E2F5007F074F /* Devices.plist in Resources */,
 				339B5E291DDC746E005A3783 /* Assets.xcassets in Resources */,
 				339B5E241DDC746E005A3783 /* Main.storyboard in Resources */,
 			);
