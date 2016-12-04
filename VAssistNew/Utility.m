@@ -65,7 +65,7 @@
             messagesPlist = nil;
             messagesManagedObject = nil;
         }
-                
+        
 //        
 //        Message *doorMessage1 = [NSEntityDescription insertNewObjectForEntityForName:@"Message" inManagedObjectContext:[Utility context]];
 //        doorMessage1.m_id = @"101";
