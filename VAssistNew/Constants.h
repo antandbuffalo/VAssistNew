@@ -24,6 +24,8 @@ extern NSString *const VA_RP_SERVER_CONTEXT;
 extern NSString *const VA_LANGUAGE_FILE;
 extern NSString *const VA_REGION_HOME;
 
+extern NSString *const VA_NOTIF_MODAL_CLOSED;
+
 #ifndef Constants_h
 #define Constants_h
 

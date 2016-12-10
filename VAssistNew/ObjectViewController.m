@@ -101,9 +101,14 @@
 }
 
 -(void)beaconStatus:(NSNotification *)notification {
-    NSLog(@"notif - %@", notification);
+    //NSLog(@"notif - %@", notification);
     NSDictionary *details = (NSDictionary *)notification.object;
     self.beaconStatus.text = details[@"beaconStatus"];
+}
+
+-(void)modalClosedFromMainView:(NSNotification *)notification {
+    [[OEPocketsphinxController sharedInstance] suspendRecognition];
+    [self.synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
 }
 
 -(void)initOpenEars {
@@ -124,15 +129,13 @@
     } else {
         NSLog(@"Error: %@",[err localizedDescription]);
     }
+    [[OEPocketsphinxController sharedInstance] setActive:TRUE error:nil];
+    [[OEPocketsphinxController sharedInstance] startListeningWithLanguageModelAtPath:self.lmPath dictionaryAtPath:self.dicPath acousticModelAtPath:[OEAcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
 }
 
 -(void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance {
-    [self startVoiceToTextListening];
-}
-
--(void)startVoiceToTextListening {
-    [[OEPocketsphinxController sharedInstance] setActive:TRUE error:nil];
-    [[OEPocketsphinxController sharedInstance] startListeningWithLanguageModelAtPath:self.lmPath dictionaryAtPath:self.dicPath acousticModelAtPath:[OEAcousticModel pathToModel:@"AcousticModelEnglish"] languageModelIsJSGF:NO]; // Change "AcousticModelEnglish" to "AcousticModelSpanish" to perform Spanish recognition instead of English.
+    
+    [[OEPocketsphinxController sharedInstance] resumeRecognition];
 }
 
 - (void) pocketsphinxDidReceiveHypothesis:(NSString *)hypothesis recognitionScore:(NSString *)recognitionScore utteranceID:(NSString *)utteranceID {
@@ -267,6 +270,8 @@
             self.lblNavTitle.text = self.objectDetails[@"title"];
             self.lblMessage.text = self.objectDetails[@"message"];
             
+            [[OEPocketsphinxController sharedInstance] suspendRecognition];
+            
             AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc]initWithString: self.objectDetails[@"message"]];
             [self.synthesizer speakUtterance:utterance];
         }
@@ -281,6 +286,14 @@
     // Do any additional setup after loading the view.
     self.synthesizer = [[AVSpeechSynthesizer alloc] init];
     self.synthesizer.delegate = self;
+
+    NSError *error;
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionDuckOthers error:&error];
+    [[AVAudioSession sharedInstance] setActive:true error:&error];
+    
+    AVSpeechUtterance *bugWorkaroundUtterance = [AVSpeechUtterance speechUtteranceWithString:@" "];
+    bugWorkaroundUtterance.rate = AVSpeechUtteranceMaximumSpeechRate;
+    [self.synthesizer speakUtterance:bugWorkaroundUtterance];
     
     self.lblNavTitle.text = self.objectDetails[@"title"];
     self.lblMessage.text = self.objectDetails[@"message"];
@@ -288,6 +301,7 @@
     //display voice message here
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beaconStatus:) name:@"beaconStatus" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modalClosedFromMainView:) name:VA_NOTIF_MODAL_CLOSED object:nil];
     
     [self formatViews];
     [self initOpenEars];
@@ -301,7 +315,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [[OEPocketsphinxController sharedInstance] stopListening];
+    [[OEPocketsphinxController sharedInstance] suspendRecognition];
     [self.synthesizer stopSpeakingAtBoundary:AVSpeechBoundaryImmediate];
 }
 

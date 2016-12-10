@@ -79,6 +79,7 @@
         [objectVC dismissViewControllerAnimated:YES completion:nil];
         isModalPresented = NO;
         [spinner startAnimating];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VA_NOTIF_MODAL_CLOSED object:nil];
     }
 }
 
@@ -95,8 +96,8 @@
 }
 
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray<CLBeacon *> *)beacons inRegion:(CLBeaconRegion *)region {
-    NSLog(@"something - %@", beacons);
-    NSLog(@"region - %@", region);
+//    NSLog(@"something - %@", beacons);
+//    NSLog(@"region - %@", region);
     CLBeacon *beacon;
     NSMutableDictionary *objectDetails = [[NSMutableDictionary alloc] init];
     if([region.identifier isEqualToString:VA_REGION_HOME]) {
@@ -212,6 +213,17 @@
     
     [self initBeacon];
     //[self checkStatus:VA_DOOR];
+
+//    AVSpeechSynthesizer *synthesizer = [[AVSpeechSynthesizer alloc] init];
+//    //synthesizer.delegate = self;
+//    NSError *error;
+//    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionDuckOthers error:&error];
+//    [[AVAudioSession sharedInstance] setActive:true error:&error];
+//    
+//    AVSpeechUtterance *bugWorkaroundUtterance = [AVSpeechUtterance speechUtteranceWithString:@"Hello"];
+//    //bugWorkaroundUtterance.rate = AVSpeechUtteranceMaximumSpeechRate;
+//    [synthesizer speakUtterance:bugWorkaroundUtterance];
+
 }
 
 - (void)didReceiveMemoryWarning {
