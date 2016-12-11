@@ -12,7 +12,7 @@
 //open door - right
 
 NSString *const VA_DOOR = @"11";
-NSString *const VA_DOOR_OPENED = @"DOOR_OPENED";    //
+NSString *const VA_DOOR_OPENED = @"DOOR_OPENED";    
 NSString *const VA_DOOR_CLOSED = @"DOOR_CLOSED";
 
 NSString *const VA_MUSIC_ROOM = @"12";
