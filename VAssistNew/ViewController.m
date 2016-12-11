@@ -31,7 +31,7 @@
 @implementation ViewController
 
 - (IBAction)glowLED:(UIButton *)sender {
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%d", VA_RP_SERVER_ADDRESS, VA_RP_SERVER_CONTEXT, 24];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%d", [Utility getRPIPAddress], VA_RP_SERVER_CONTEXT, 24];
     NSLog(@"server address - %@", urlString);
     
     NSURL *URL = [NSURL URLWithString:urlString];
@@ -203,6 +203,27 @@
     [spinner startAnimating];
 }
 
+-(void)readSettingsBundle {
+    NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"bundle"];
+    if(!settingsBundle) {
+        NSLog(@"Could not find Settings.bundle");
+        return;
+    }
+    
+    NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:[settingsBundle stringByAppendingPathComponent:@"Root.plist"]];
+    NSArray *preferences = [settings objectForKey:@"PreferenceSpecifiers"];
+    NSLog(@"pref - %@", preferences);
+    for (int i=0; i < preferences.count; i++) {
+        if([preferences[i][@"Type"] isEqualToString: @"PSTextFieldSpecifier"]) {
+            NSLog(@"value - %@", preferences[i][@"DefaultValue"]);
+            NSLog(@"value - %@", preferences[i][@"name_preference"]);
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *ipaddress = [defaults stringForKey:@"name_preference"];
+            NSLog(@"ip - %@", ipaddress);
+        }
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -223,6 +244,8 @@
 //    AVSpeechUtterance *bugWorkaroundUtterance = [AVSpeechUtterance speechUtteranceWithString:@"Hello"];
 //    //bugWorkaroundUtterance.rate = AVSpeechUtteranceMaximumSpeechRate;
 //    [synthesizer speakUtterance:bugWorkaroundUtterance];
+    
+    //[self readSettingsBundle];
 
 }
 

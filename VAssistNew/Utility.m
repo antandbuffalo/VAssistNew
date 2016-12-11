@@ -169,6 +169,15 @@
     return [labelNameList objectForKey:givenKey];
 }
 
++(NSString *)getRPIPAddress {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *ipaddress = [defaults stringForKey:@"rp_ipaddress"];
+    if(ipaddress != nil) {
+        return  [NSString stringWithFormat:@"http://%@:3000", ipaddress];
+    }
+    return VA_RP_SERVER_ADDRESS;
+}
+
 
 
 @end

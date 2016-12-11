@@ -16,6 +16,7 @@
 		33658EA51DE6002F007B26E5 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = 33658E9F1DE6002F007B26E5 /* Device.m */; };
 		33658EA61DE6002F007B26E5 /* Message+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 33658EA11DE6002F007B26E5 /* Message+CoreDataProperties.m */; };
 		33658EA71DE6002F007B26E5 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 33658EA31DE6002F007B26E5 /* Message.m */; };
+		337F5B831DFD1E3100905A57 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 337F5B821DFD1E3100905A57 /* Settings.bundle */; };
 		339B5E1B1DDC746E005A3783 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E1A1DDC746E005A3783 /* main.m */; };
 		339B5E1E1DDC746E005A3783 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E1D1DDC746E005A3783 /* AppDelegate.m */; };
 		339B5E211DDC746E005A3783 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 339B5E201DDC746E005A3783 /* ViewController.m */; };
@@ -44,6 +45,7 @@
 		33658EA11DE6002F007B26E5 /* Message+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Message+CoreDataProperties.m"; sourceTree = "<group>"; };
 		33658EA21DE6002F007B26E5 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		33658EA31DE6002F007B26E5 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		337F5B821DFD1E3100905A57 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		339B5E161DDC746E005A3783 /* VAssistNew.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VAssistNew.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		339B5E1A1DDC746E005A3783 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		339B5E1C1DDC746E005A3783 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				33658EA11DE6002F007B26E5 /* Message+CoreDataProperties.m */,
 				33658EA21DE6002F007B26E5 /* Message.h */,
 				33658EA31DE6002F007B26E5 /* Message.m */,
+				337F5B821DFD1E3100905A57 /* Settings.bundle */,
 			);
 			path = VAssistNew;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 				3317F15A1DE496D100FA1E87 /* AcousticModelEnglish.bundle in Resources */,
 				33B573121DF2E2F5007F074F /* Devices.plist in Resources */,
 				339B5E291DDC746E005A3783 /* Assets.xcassets in Resources */,
+				337F5B831DFD1E3100905A57 /* Settings.bundle in Resources */,
 				339B5E241DDC746E005A3783 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

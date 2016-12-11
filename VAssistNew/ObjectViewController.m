@@ -38,7 +38,7 @@
 @implementation ObjectViewController
 
 -(void)doorActions:(NSString *)action {
-    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@", VA_RP_SERVER_ADDRESS, VA_RP_SERVER_CONTEXT, action];
+    NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@", [Utility getRPIPAddress], VA_RP_SERVER_CONTEXT, action];
     NSLog(@"server address - %@", urlString);
     
     NSURL *URL = [NSURL URLWithString:urlString];
@@ -69,7 +69,7 @@
     //send service call to RP to open or close
     
     NSString *action = self.objectDetails[@"action"];
-    NSString *urlString = [NSString stringWithFormat:@"%@/access", VA_RP_SERVER_ADDRESS];
+    NSString *urlString = [NSString stringWithFormat:@"%@/access", [Utility getRPIPAddress]];
     NSLog(@"server address - %@", urlString);
     NSURL *URL = [NSURL URLWithString:urlString];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -246,8 +246,8 @@
 }
 
 -(void)getDeviceStatusFromRP {
-    NSString *urlString = [NSString stringWithFormat:@"%@/device/%@", VA_RP_SERVER_ADDRESS, self.objectDetails[@"deviceId"]];
-//    NSString *urlString = [NSString stringWithFormat:@"%@/device/11", VA_RP_SERVER_ADDRESS];
+    NSString *urlString = [NSString stringWithFormat:@"%@/device/%@", [Utility getRPIPAddress], self.objectDetails[@"deviceId"]];
+//    NSString *urlString = [NSString stringWithFormat:@"%@/device/11", [Utility getRPIPAddress]];
 
     NSLog(@"server address - %@", urlString);
     

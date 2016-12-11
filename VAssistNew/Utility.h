@@ -23,4 +23,6 @@
 
 +(void) deleteAllObjects: (NSString *) entityDescription;
 
++(NSString *)getRPIPAddress;
+
 @end
